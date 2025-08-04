@@ -419,16 +419,16 @@ def home():
     
     <div class="header">
         <h1 class="title">Vides Mākslas Sarunas</h1>
-        <p class="subtitle">Jānis & Anna - Environmental Art Dialogue</p>
+        <p class="subtitle">Jānis & Anna -Vides mākslas sarunas un pārdomas</p>
         <p class="description">
-            Live AI conversation between two environmental art philosophers
+            Dzīvā saruna ar diviem AI par vides mākslu un telpu filazofiju
         </p>
         <div class="render-badge">🌟 Hosted on Render - Free & Reliable</div>
         
         <div class="status-bar">
-            <div class="status-item" id="statusIndicator">⏸️ Waiting</div>
-            <div class="status-item">Turn: <span id="turnCount">0</span></div>
-            <div class="status-item">Messages: <span id="messageCount">0</span></div>
+            <div class="status-item" id="statusIndicator">⏸️ Gaida</div>
+            <div class="status-item">Kārta: <span id="turnCount">0</span></div>
+            <div class="status-item">Sarunas: <span id="messageCount">0</span></div>
         </div>
     </div>
     
@@ -452,7 +452,7 @@ def home():
                 const data = await response.json();
                 
                 // Update connection status
-                document.getElementById('connectionStatus').textContent = '🟢 Live';
+                document.getElementById('connectionStatus').textContent = '🟢 Tiešraidē';
                 document.getElementById('connectionStatus').className = 'connection-status connected';
                 isConnected = true;
                 
@@ -460,7 +460,7 @@ def home():
                 if (data.status) {
                     const isActive = data.status.active;
                     document.getElementById('statusIndicator').textContent = 
-                        isActive ? '🟢 Live Conversation' : '⏸️ Paused';
+                        isActive ? '🟢 Live Conversation' : '⏸️ Pauze';
                     document.getElementById('statusIndicator').className = 
                         isActive ? 'status-item status-live' : 'status-item';
                     document.getElementById('turnCount').textContent = data.status.turn || 0;
@@ -472,7 +472,7 @@ def home():
                     const latestMessage = data.messages[data.messages.length - 1];
                     const currentMessageDiv = document.getElementById('currentMessage');
                     
-                    const speakerName = latestMessage.speaker === 'janis' ? '🎨 JĀNIS' : '🎭 ANNA';
+                    const speakerName = latestMessage.speaker === 'janis' ? '👾 JĀNIS' : '🤖 ANNA';
                     const speakerRole = latestMessage.speaker === 'janis' ? 'Liminal Space Philosopher' : 'Virtual Environment Experimenter';
                     const messageClass = latestMessage.speaker === 'janis' ? 'janis-message' : 'anna-message';
                     
@@ -500,7 +500,7 @@ def home():
                 console.error('Connection error:', error);
                 
                 // Update connection status
-                document.getElementById('connectionStatus').textContent = '🔴 Offline';
+                document.getElementById('connectionStatus').textContent = '🔴 Bezsaistē';
                 document.getElementById('connectionStatus').className = 'connection-status disconnected';
                 isConnected = false;
                 

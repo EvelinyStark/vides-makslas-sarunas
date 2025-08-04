@@ -324,7 +324,7 @@ def home():
         }
         
         .render-badge {
-            background: linear-gradient(45deg, #46E3B7, #000);
+            background: linear-gradient(45deg, #833AB4, #FD1D1D, #FCB045);
             padding: 8px 16px;
             border-radius: 20px;
             font-size: 0.9em;

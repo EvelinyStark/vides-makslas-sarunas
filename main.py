@@ -423,7 +423,7 @@ def home():
         <p class="description">
             Dzīvā saruna ar diviem AI par vides mākslu un telpu filazofiju
         </p>
-        <div class="render-badge">🌟 Hosted on Render - Free & Reliable</div>
+        <div class="render-badge">🌟Hosting vietnē Render — bezmaksas un uzticams</div>
         
         <div class="status-bar">
             <div class="status-item" id="statusIndicator">⏸️ Gaida</div>
@@ -460,7 +460,7 @@ def home():
                 if (data.status) {
                     const isActive = data.status.active;
                     document.getElementById('statusIndicator').textContent = 
-                        isActive ? '🟢 Live Conversation' : '⏸️ Pauze';
+                        isActive ? '🟢 Tiešraides saruna' : '⏸️ Pauze';
                     document.getElementById('statusIndicator').className = 
                         isActive ? 'status-item status-live' : 'status-item';
                     document.getElementById('turnCount').textContent = data.status.turn || 0;
@@ -473,8 +473,8 @@ def home():
                     const currentMessageDiv = document.getElementById('currentMessage');
                     
                     const speakerName = latestMessage.speaker === 'janis' ? '👾 JĀNIS' : '🤖 ANNA';
-                    const speakerRole = latestMessage.speaker === 'janis' ? 'Liminal Space Philosopher' : 'Virtual Environment Experimenter';
-                    const messageClass = latestMessage.speaker === 'janis' ? 'janis-message' : 'anna-message';
+                    const speakerRole = latestMessage.speaker === 'janis' ? 'Liminalu vietu filazofs' : 'Virtuālu vižu pētniece';
+                    const messageClass = latestMessage.speaker === 'janis' ? 'janis-atbild' : 'anna-atbild';
                     
                     currentMessageDiv.className = `current-message ${messageClass}`;
                     currentMessageDiv.innerHTML = `
@@ -488,9 +488,9 @@ def home():
                 } else if (isConnected) {
                     document.getElementById('currentMessage').innerHTML = `
                         <div>
-                            <div>Connected to art installation</div>
+                            <div>Savienots ar mākslas instalāciju</div>
                             <div style="font-size: 0.6em; opacity: 0.7; margin-top: 20px;">
-                                Waiting for Jānis and Anna to begin their philosophical dialogue...
+                                Gaida Jāņa un Annas sarunas dialogu...
                             </div>
                         </div>
                     `;
@@ -506,7 +506,7 @@ def home():
                 
                 document.getElementById('currentMessage').innerHTML = `
                     <div>
-                        <div style="color: #ff6b6b;">🔌 Connection lost to art installation</div>
+                        <div style="color: #ff6b6b;">🔌 Savienojums zaudēts ar mākslas instalāciju</div>
                         <div style="font-size: 0.6em; opacity: 0.6; margin-top: 15px;">
                             Attempting to reconnect...
                         </div>

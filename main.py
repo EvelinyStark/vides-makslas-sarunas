@@ -1,5 +1,5 @@
-# main.py - For Railway hosting (much better than new Replit)
-# This gives you a simple, permanent URL like: your-exhibition.railway.app
+# main.py - RENDER VERSION (Fixed for your platform)
+# Delete your old main.py and replace with this code
 
 from flask import Flask, request, jsonify, render_template_string
 import json
@@ -11,9 +11,11 @@ import time
 
 app = Flask(__name__)
 
-# Railway environment variables (set in Railway dashboard)
+# Render environment variables (you set this in Render dashboard)
 API_KEY = os.environ.get('API_KEY', 'your-default-api-key')
-PORT = int(os.environ.get('PORT', 8080))
+# Render uses PORT environment variable automatically
+PORT = int(os.environ.get('PORT', 10000))
+
 DATABASE_PATH = 'exhibition.db'
 
 def init_database():
@@ -62,147 +64,208 @@ def get_db():
     conn.row_factory = sqlite3.Row
     return conn
 
-# API Routes (same as before)
+# API Routes
 @app.route('/api/add-message', methods=['POST'])
 def add_message():
     """Add new conversation message"""
-    data = request.get_json()
-    
-    if data.get('api_key') != API_KEY:
-        return jsonify({'error': 'Invalid API key'}), 401
-    
-    message = data.get('message', {})
-    
-    conn = get_db()
-    cursor = conn.cursor()
-    
-    cursor.execute('''
-        INSERT INTO conversations (speaker, text, timestamp, turn_number)
-        VALUES (?, ?, ?, ?)
-    ''', (
-        message.get('speaker'),
-        message.get('text'),
-        message.get('timestamp'),
-        message.get('turn', 0)
-    ))
-    
-    cursor.execute('SELECT COUNT(*) FROM conversations')
-    total = cursor.fetchone()[0]
-    
-    cursor.execute('''
-        UPDATE exhibition_status 
-        SET total_messages = ?, last_update = CURRENT_TIMESTAMP 
-        WHERE id = 1
-    ''', (total,))
-    
-    conn.commit()
-    message_id = cursor.lastrowid
-    conn.close()
-    
-    print(f"✅ Message added: {message.get('speaker')} - {message.get('text', '')[:30]}...")
-    
-    return jsonify({'success': True, 'message_id': message_id})
+    try:
+        data = request.get_json()
+        
+        if not data or data.get('api_key') != API_KEY:
+            return jsonify({'error': 'Invalid API key'}), 401
+        
+        message = data.get('message', {})
+        
+        conn = get_db()
+        cursor = conn.cursor()
+        
+        cursor.execute('''
+            INSERT INTO conversations (speaker, text, timestamp, turn_number)
+            VALUES (?, ?, ?, ?)
+        ''', (
+            message.get('speaker', ''),
+            message.get('text', ''),
+            message.get('timestamp', ''),
+            message.get('turn', 0)
+        ))
+        
+        cursor.execute('SELECT COUNT(*) FROM conversations')
+        total = cursor.fetchone()[0]
+        
+        cursor.execute('''
+            UPDATE exhibition_status 
+            SET total_messages = ?, last_update = CURRENT_TIMESTAMP 
+            WHERE id = 1
+        ''', (total,))
+        
+        conn.commit()
+        message_id = cursor.lastrowid
+        conn.close()
+        
+        print(f"✅ Message added: {message.get('speaker')} - {message.get('text', '')[:30]}...")
+        
+        return jsonify({'success': True, 'message_id': message_id})
+        
+    except Exception as e:
+        print(f"❌ Add message error: {e}")
+        return jsonify({'error': 'Server error'}), 500
 
 @app.route('/api/update-status', methods=['POST'])
 def update_status():
     """Update exhibition status"""
-    data = request.get_json()
-    
-    if data.get('api_key') != API_KEY:
-        return jsonify({'error': 'Invalid API key'}), 401
-    
-    status = data.get('status', {})
-    
-    conn = get_db()
-    cursor = conn.cursor()
-    
-    cursor.execute('''
-        UPDATE exhibition_status 
-        SET active = ?, current_turn = ?, current_speaker = ?, 
-            tts_mode = ?, ai_mode = ?, last_update = CURRENT_TIMESTAMP
-        WHERE id = 1
-    ''', (
-        1 if status.get('active') else 0,
-        status.get('turn', 0),
-        status.get('speaker', 'janis'),
-        status.get('tts_mode', 'Hugo.lv TTS'),
-        status.get('ai_mode', 'Simple Fallback')
-    ))
-    
-    conn.commit()
-    conn.close()
-    
-    return jsonify({'success': True})
+    try:
+        data = request.get_json()
+        
+        if not data or data.get('api_key') != API_KEY:
+            return jsonify({'error': 'Invalid API key'}), 401
+        
+        status = data.get('status', {})
+        
+        conn = get_db()
+        cursor = conn.cursor()
+        
+        cursor.execute('''
+            UPDATE exhibition_status 
+            SET active = ?, current_turn = ?, current_speaker = ?, 
+                tts_mode = ?, ai_mode = ?, last_update = CURRENT_TIMESTAMP
+            WHERE id = 1
+        ''', (
+            1 if status.get('active') else 0,
+            status.get('turn', 0),
+            status.get('speaker', 'janis'),
+            status.get('tts_mode', 'Hugo.lv TTS'),
+            status.get('ai_mode', 'Simple Fallback')
+        ))
+        
+        conn.commit()
+        conn.close()
+        
+        return jsonify({'success': True})
+        
+    except Exception as e:
+        print(f"❌ Update status error: {e}")
+        return jsonify({'error': 'Server error'}), 500
 
 @app.route('/api/conversation')
 def get_conversation():
     """Get conversation data for website"""
-    limit = request.args.get('limit', 50, type=int)
-    
-    conn = get_db()
-    cursor = conn.cursor()
-    
-    cursor.execute('''
-        SELECT speaker, text, timestamp, turn_number 
-        FROM conversations 
-        ORDER BY id DESC 
-        LIMIT ?
-    ''', (limit,))
-    
-    messages = []
-    for row in cursor.fetchall():
-        messages.append({
-            'speaker': row['speaker'],
-            'text': row['text'],
-            'timestamp': row['timestamp'],
-            'turn': row['turn_number']
+    try:
+        limit = request.args.get('limit', 50, type=int)
+        
+        conn = get_db()
+        cursor = conn.cursor()
+        
+        cursor.execute('''
+            SELECT speaker, text, timestamp, turn_number 
+            FROM conversations 
+            ORDER BY id DESC 
+            LIMIT ?
+        ''', (limit,))
+        
+        messages = []
+        for row in cursor.fetchall():
+            messages.append({
+                'speaker': row['speaker'],
+                'text': row['text'],
+                'timestamp': row['timestamp'],
+                'turn': row['turn_number']
+            })
+        
+        messages.reverse()
+        
+        cursor.execute('SELECT * FROM exhibition_status WHERE id = 1')
+        status_row = cursor.fetchone()
+        
+        if status_row:
+            status = {
+                'active': bool(status_row['active']),
+                'turn': status_row['current_turn'],
+                'speaker': status_row['current_speaker'],
+                'total_messages': status_row['total_messages'],
+                'last_update': status_row['last_update'],
+                'tts_mode': status_row['tts_mode'],
+                'ai_mode': status_row['ai_mode']
+            }
+        else:
+            status = {
+                'active': False,
+                'turn': 0,
+                'speaker': 'janis',
+                'total_messages': 0,
+                'last_update': '',
+                'tts_mode': 'Hugo.lv TTS',
+                'ai_mode': 'Simple Fallback'
+            }
+        
+        conn.close()
+        
+        return jsonify({
+            'messages': messages,
+            'status': status
         })
-    
-    messages.reverse()
-    
-    cursor.execute('SELECT * FROM exhibition_status WHERE id = 1')
-    status_row = cursor.fetchone()
-    
-    status = {
-        'active': bool(status_row['active']),
-        'turn': status_row['current_turn'],
-        'speaker': status_row['current_speaker'],
-        'total_messages': status_row['total_messages'],
-        'last_update': status_row['last_update'],
-        'tts_mode': status_row['tts_mode'],
-        'ai_mode': status_row['ai_mode']
-    }
-    
-    conn.close()
-    
-    return jsonify({
-        'messages': messages,
-        'status': status
-    })
+        
+    except Exception as e:
+        print(f"❌ Get conversation error: {e}")
+        return jsonify({'messages': [], 'status': {'active': False, 'turn': 0, 'speaker': 'janis', 'total_messages': 0}})
 
 @app.route('/api/clear-history', methods=['POST'])
 def clear_history():
     """Clear conversation history"""
-    data = request.get_json()
-    
-    if data.get('api_key') != API_KEY:
-        return jsonify({'error': 'Invalid API key'}), 401
-    
-    conn = get_db()
-    cursor = conn.cursor()
-    
-    cursor.execute('DELETE FROM conversations')
-    cursor.execute('''
-        UPDATE exhibition_status 
-        SET current_turn = 0, total_messages = 0, current_speaker = 'janis',
-            last_update = CURRENT_TIMESTAMP
-        WHERE id = 1
-    ''')
-    
-    conn.commit()
-    conn.close()
-    
-    return jsonify({'success': True})
+    try:
+        data = request.get_json()
+        
+        if not data or data.get('api_key') != API_KEY:
+            return jsonify({'error': 'Invalid API key'}), 401
+        
+        conn = get_db()
+        cursor = conn.cursor()
+        
+        cursor.execute('DELETE FROM conversations')
+        cursor.execute('''
+            UPDATE exhibition_status 
+            SET current_turn = 0, total_messages = 0, current_speaker = 'janis',
+                last_update = CURRENT_TIMESTAMP
+            WHERE id = 1
+        ''')
+        
+        conn.commit()
+        conn.close()
+        
+        print("✅ History cleared")
+        
+        return jsonify({'success': True})
+        
+    except Exception as e:
+        print(f"❌ Clear history error: {e}")
+        return jsonify({'error': 'Server error'}), 500
+
+@app.route('/api/stats')
+def get_stats():
+    """Get exhibition statistics"""
+    try:
+        conn = get_db()
+        cursor = conn.cursor()
+        
+        cursor.execute('SELECT COUNT(*) FROM conversations')
+        total_messages = cursor.fetchone()[0]
+        
+        cursor.execute("SELECT COUNT(*) FROM conversations WHERE speaker = 'janis'")
+        janis_messages = cursor.fetchone()[0]
+        
+        cursor.execute("SELECT COUNT(*) FROM conversations WHERE speaker = 'anna'")
+        anna_messages = cursor.fetchone()[0]
+        
+        conn.close()
+        
+        return jsonify({
+            'total_messages': total_messages,
+            'janis_messages': janis_messages,
+            'anna_messages': anna_messages
+        })
+        
+    except Exception as e:
+        print(f"❌ Stats error: {e}")
+        return jsonify({'total_messages': 0, 'janis_messages': 0, 'anna_messages': 0})
 
 @app.route('/')
 def home():
@@ -260,8 +323,8 @@ def home():
             margin: 0 auto 30px;
         }
         
-        .railway-badge {
-            background: linear-gradient(45deg, #8B5CF6, #06B6D4);
+        .render-badge {
+            background: linear-gradient(45deg, #46E3B7, #000);
             padding: 8px 16px;
             border-radius: 20px;
             font-size: 0.9em;
@@ -325,6 +388,19 @@ def home():
             background: rgba(255, 87, 34, 0.1);
         }
         
+        .connection-status {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            padding: 10px 16px;
+            border-radius: 20px;
+            font-size: 0.8em;
+            z-index: 1000;
+        }
+        
+        .connected { background: rgba(76, 175, 80, 0.9); }
+        .disconnected { background: rgba(244, 67, 54, 0.9); }
+        
         @keyframes gradientFlow {
             0% { background-position: 0% 50%; }
             50% { background-position: 100% 50%; }
@@ -339,13 +415,15 @@ def home():
     </style>
 </head>
 <body>
+    <div class="connection-status" id="connectionStatus">🔗 Connecting...</div>
+    
     <div class="header">
         <h1 class="title">Vides Mākslas Sarunas</h1>
         <p class="subtitle">Jānis & Anna - Environmental Art Dialogue</p>
         <p class="description">
             Live AI conversation between two environmental art philosophers
         </p>
-        <div class="railway-badge">🚂 Hosted on Railway - Simple & Reliable URLs</div>
+        <div class="render-badge">🌟 Hosted on Render - Free & Reliable</div>
         
         <div class="status-bar">
             <div class="status-item" id="statusIndicator">⏸️ Waiting</div>
@@ -356,56 +434,102 @@ def home():
     
     <div class="conversation-container">
         <div id="currentMessage" class="current-message">
-            Waiting for the conversation to begin...
+            <div>
+                <div>Waiting for the conversation to begin...</div>
+                <div style="font-size: 0.6em; opacity: 0.7; margin-top: 20px;">
+                    The AI artists are preparing their environmental art dialogue
+                </div>
+            </div>
         </div>
     </div>
     
     <script>
+        let isConnected = false;
+        
         async function updateExhibition() {
             try {
                 const response = await fetch('/api/conversation');
                 const data = await response.json();
                 
+                // Update connection status
+                document.getElementById('connectionStatus').textContent = '🟢 Live';
+                document.getElementById('connectionStatus').className = 'connection-status connected';
+                isConnected = true;
+                
+                // Update status bar
                 if (data.status) {
+                    const isActive = data.status.active;
                     document.getElementById('statusIndicator').textContent = 
-                        data.status.active ? '🟢 Live Conversation' : '⏸️ Paused';
+                        isActive ? '🟢 Live Conversation' : '⏸️ Paused';
+                    document.getElementById('statusIndicator').className = 
+                        isActive ? 'status-item status-live' : 'status-item';
                     document.getElementById('turnCount').textContent = data.status.turn || 0;
                     document.getElementById('messageCount').textContent = data.status.total_messages || 0;
                 }
                 
+                // Update current message
                 if (data.messages && data.messages.length > 0) {
                     const latestMessage = data.messages[data.messages.length - 1];
                     const currentMessageDiv = document.getElementById('currentMessage');
                     
                     const speakerName = latestMessage.speaker === 'janis' ? '🎨 JĀNIS' : '🎭 ANNA';
+                    const speakerRole = latestMessage.speaker === 'janis' ? 'Liminal Space Philosopher' : 'Virtual Environment Experimenter';
                     const messageClass = latestMessage.speaker === 'janis' ? 'janis-message' : 'anna-message';
                     
                     currentMessageDiv.className = `current-message ${messageClass}`;
                     currentMessageDiv.innerHTML = `
                         <div>
-                            <div style="font-size: 0.8em; opacity: 0.8; margin-bottom: 15px;">${speakerName}</div>
+                            <div style="font-size: 0.6em; opacity: 0.7; margin-bottom: 8px;">${speakerRole}</div>
+                            <div style="font-size: 0.8em; opacity: 0.9; margin-bottom: 20px; font-weight: 600;">${speakerName}</div>
                             <div>${latestMessage.text}</div>
+                            <div style="font-size: 0.5em; opacity: 0.5; margin-top: 20px;">${latestMessage.timestamp}</div>
+                        </div>
+                    `;
+                } else if (isConnected) {
+                    document.getElementById('currentMessage').innerHTML = `
+                        <div>
+                            <div>Connected to art installation</div>
+                            <div style="font-size: 0.6em; opacity: 0.7; margin-top: 20px;">
+                                Waiting for Jānis and Anna to begin their philosophical dialogue...
+                            </div>
                         </div>
                     `;
                 }
                 
             } catch (error) {
                 console.error('Connection error:', error);
+                
+                // Update connection status
+                document.getElementById('connectionStatus').textContent = '🔴 Offline';
+                document.getElementById('connectionStatus').className = 'connection-status disconnected';
+                isConnected = false;
+                
+                document.getElementById('currentMessage').innerHTML = `
+                    <div>
+                        <div style="color: #ff6b6b;">🔌 Connection lost to art installation</div>
+                        <div style="font-size: 0.6em; opacity: 0.6; margin-top: 15px;">
+                            Attempting to reconnect...
+                        </div>
+                    </div>
+                `;
             }
         }
         
+        // Update every 2 seconds
         setInterval(updateExhibition, 2000);
-        updateExhibition();
+        updateExhibition(); // Initial load
     </script>
 </body>
 </html>
     """)
 
 if __name__ == '__main__':
-    print("🚂 RAILWAY ENVIRONMENTAL ART EXHIBITION")
-    print("✅ Simple, permanent URLs that never change!")
+    print("🌟 RENDER ENVIRONMENTAL ART EXHIBITION")
+    print("✅ Fixed for Render platform!")
     
+    # Initialize database
     init_database()
     
     print(f"✅ Starting on port {PORT}...")
+    # This is the key difference for Render!
     app.run(host='0.0.0.0', port=PORT, debug=False)

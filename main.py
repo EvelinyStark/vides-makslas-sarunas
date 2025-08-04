@@ -283,7 +283,7 @@ def home():
         
         body {
             font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
-            background: linear-gradient(135deg, #0a0a0a, #1a1a1a, #0a0a0a);
+            background: rgba(0, 0, 0, 0.8);
             color: #fff;
             min-height: 100vh;
             overflow-x: hidden;

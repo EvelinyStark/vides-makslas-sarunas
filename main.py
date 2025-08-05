@@ -359,7 +359,7 @@ def home():
             background: rgba(255,255,255,0.06);
             backdrop-filter: blur(15px);
             border-radius: 10px;
-            padding: 50px;
+            padding: 20px;
             margin: 30px 0;
             min-height: 250px;
             display: flex;

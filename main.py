@@ -278,6 +278,57 @@ def get_stats():
         print(f"❌ Stats error: {e}")
         return jsonify({'total_messages': 0, 'janis_messages': 0, 'anna_messages': 0})
 
+# Add this route to your main.py file, after the existing API routes
+
+@app.route('/api/control-commands', methods=['GET'])
+def get_control_commands():
+    """Get pending control commands for main script to process"""
+    try:
+        # Check for API key in Authorization header
+        auth_header = request.headers.get('Authorization', '')
+        if not auth_header.startswith('Bearer ') or auth_header.replace('Bearer ', '') != API_KEY:
+            return jsonify({'error': 'Invalid API key'}), 401
+        
+        conn = get_db()
+        cursor = conn.cursor()
+        
+        # Get unprocessed commands
+        cursor.execute('''
+            SELECT id, command, timestamp 
+            FROM control_commands 
+            WHERE processed = 0 
+            ORDER BY id ASC
+        ''')
+        
+        commands = []
+        for row in cursor.fetchall():
+            commands.append({
+                'id': row['id'],
+                'command': row['command'],
+                'timestamp': row['timestamp']
+            })
+        
+        # Mark commands as processed
+        if commands:
+            command_ids = [cmd['id'] for cmd in commands]
+            placeholders = ','.join('?' * len(command_ids))
+            cursor.execute(f'''
+                UPDATE control_commands 
+                SET processed = 1 
+                WHERE id IN ({placeholders})
+            ''', command_ids)
+            
+            conn.commit()
+            print(f"✅ Sent {len(commands)} control commands to main script")
+        
+        conn.close()
+        
+        return jsonify({'commands': commands})
+        
+    except Exception as e:
+        print(f"❌ Control commands API error: {e}")
+        return jsonify({'commands': []}), 500
+
 # NEW CONTROL PANEL ROUTES
 # ========================
 

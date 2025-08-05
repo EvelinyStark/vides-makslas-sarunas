@@ -351,7 +351,7 @@ def home():
         
         .conversation-container {
             max-width: 1400px;
-            margin: 40px auto;
+            margin: 30px auto;
             padding: 0 20px;
         }
         

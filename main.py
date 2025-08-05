@@ -326,16 +326,6 @@ def home():
             margin: 0 auto 30px;
         }
         
-        .render-badge {
-            background: linear-gradient(45deg, #0A9400, #134226, #545454);
-            padding: 8px 16px;
-            border-radius: 20px;
-            font-size: 0.9em;
-            display: inline-block;
-            margin-top: 20px;
-            font-weight: 500;
-        }
-        
         .status-bar {
             display: flex;
             justify-content: center;
@@ -425,8 +415,6 @@ def home():
         <p class="subtitle">Jānis & Anna - Vides mākslas sarunas un pārdomas</p>
         <p class="description">
             Dzīvā saruna ar diviem AI par vides mākslu un telpu filazofiju
-        </p>
-        <div class="render-badge">🌟Hosting vietnē Render — bezmaksas un uzticams</div>
         
         <div class="status-bar">
             <div class="status-item" id="statusIndicator">⏸️ Gaida</div>

@@ -282,7 +282,7 @@ def home():
         * { margin: 0; padding: 0; box-sizing: border-box; }
         
         body {
-            font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+            font-family: 'Cascadia Mono';
             background: rgba(0, 0, 0, 0.9);
             color: #fff;
             min-height: 100vh;
@@ -324,7 +324,7 @@ def home():
         }
         
         .render-badge {
-            background: linear-gradient(45deg, #833AB4, #FD1D1D, #FCB045);
+            background: linear-gradient(45deg, #EEAECA, #94BBE9);
             padding: 8px 16px;
             border-radius: 20px;
             font-size: 0.9em;
@@ -365,7 +365,7 @@ def home():
         .current-message {
             background: rgba(255,255,255,0.06);
             backdrop-filter: blur(15px);
-            border-radius: 25px;
+            border-radius: 10px;
             padding: 50px;
             margin: 30px 0;
             min-height: 250px;
@@ -415,11 +415,11 @@ def home():
     </style>
 </head>
 <body>
-    <div class="connection-status" id="connectionStatus">🔗 Connecting...</div>
+    <div class="connection-status" id="connectionStatus">🔗 savienojas...</div>
     
     <div class="header">
         <h1 class="title">Vides Mākslas Sarunas</h1>
-        <p class="subtitle">Jānis & Anna -Vides mākslas sarunas un pārdomas</p>
+        <p class="subtitle">Jānis & Anna - Vides mākslas sarunas un pārdomas</p>
         <p class="description">
             Dzīvā saruna ar diviem AI par vides mākslu un telpu filazofiju
         </p>
@@ -472,8 +472,8 @@ def home():
                     const latestMessage = data.messages[data.messages.length - 1];
                     const currentMessageDiv = document.getElementById('currentMessage');
                     
-                    const speakerName = latestMessage.speaker === 'janis' ? '👾 JĀNIS' : '🤖 ANNA';
-                    const speakerRole = latestMessage.speaker === 'janis' ? 'Liminalu vietu filazofs' : 'Virtuālu vižu pētniece';
+                    const speakerName = latestMessage.speaker === 'janis' ? '👾 JĀNIS AI' : '🤖 ANNA AI';
+                    const speakerRole = latestMessage.speaker === 'janis' ? 'Telpu filazofija' : 'Virtuālas vides pārdomas';
                     const messageClass = latestMessage.speaker === 'janis' ? 'janis-atbild' : 'anna-atbild';
                     
                     currentMessageDiv.className = `current-message ${messageClass}`;
@@ -506,7 +506,7 @@ def home():
                 
                 document.getElementById('currentMessage').innerHTML = `
                     <div>
-                        <div style="color: #ff6b6b;">🔌 Savienojums zaudēts ar mākslas instalāciju</div>
+                        <div style="color: #ff6b6b;">🔌 Savienojums zaudēts ar serveri</div>
                         <div style="font-size: 0.6em; opacity: 0.6; margin-top: 15px;">
                             Attempting to reconnect...
                         </div>

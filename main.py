@@ -282,7 +282,7 @@ def home():
         * { margin: 0; padding: 0; box-sizing: border-box; }
         
         body {
-            font-family: 'Consolas';
+            font-family: 'Inconsolata';
             background: rgba(0, 0, 0, 0.9);
             color: #fff;
             min-height: 100vh;

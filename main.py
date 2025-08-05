@@ -278,11 +278,14 @@ def home():
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Jāņa & Annas Vides Mākslas Sarunas | Environmental Art Exhibition</title>
     <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>✨</text></svg>">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inconsolata:wght@200..900&family=Pixelify+Sans&display=swap" rel="stylesheet">
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
         
         body {
-            font-family: 'Inconsolata';
+            font-family: "Inconsolata", monospace;
             background: rgba(0, 0, 0, 0.9);
             color: #fff;
             min-height: 100vh;

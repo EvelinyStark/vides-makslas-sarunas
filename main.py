@@ -295,16 +295,19 @@ def home():
         
         .header {
             text-align: center;
-            padding: 60px 20px;
+            padding: 30px 20px 20px 20px;
             background: rgba(255,255,255,0.03);
             backdrop-filter: blur(20px);
             border-bottom: 1px solid rgba(255,255,255,0.1);
+            position: sticky;
+            top: 0;
+            z-index: 100;
         }
         
         .title {
-            font-size: clamp(2.5em, 8vw, 4em);
+            font-size: clamp(1.8em, 5vw, 2.5em);
             font-weight: 200;
-            margin-bottom: 15px;
+            margin-bottom: 8px;
             background: linear-gradient(135deg, #4CAF50, #2196F3, #FF5722, #9C27B0);
             background-size: 400% 400%;
             animation: gradientFlow 8s ease infinite;
@@ -314,32 +317,32 @@ def home():
         }
         
         .subtitle {
-            font-size: clamp(1.1em, 3vw, 1.4em);
+            font-size: clamp(0.9em, 2vw, 1.1em);
             opacity: 0.9;
-            margin-bottom: 15px;
+            margin-bottom: 8px;
         }
         
         .description {
-            font-size: clamp(0.9em, 2.5vw, 1.1em);
+            font-size: clamp(0.8em, 2vw, 0.95em);
             opacity: 0.7;
-            max-width: 600px;
-            margin: 0 auto 30px;
+            max-width: 500px;
+            margin: 0 auto 20px;
         }
         
         .status-bar {
             display: flex;
             justify-content: center;
-            gap: 20px;
+            gap: 15px;
             flex-wrap: wrap;
-            margin-top: 30px;
+            margin-top: 15px;
         }
         
         .status-item {
-            padding: 12px 24px;
+            padding: 8px 16px;
             background: rgba(255,255,255,0.08);
-            border-radius: 25px;
+            border-radius: 20px;
             backdrop-filter: blur(10px);
-            font-size: 0.9em;
+            font-size: 0.8em;
             border: 1px solid rgba(255,255,255,0.1);
         }
         
@@ -351,7 +354,7 @@ def home():
         
         .conversation-container {
             max-width: 1400px;
-            margin: 30px auto;
+            margin: 20px auto;
             padding: 0 20px;
         }
         
@@ -361,14 +364,16 @@ def home():
             border-radius: 10px;
             padding: 20px;
             margin: 30px 0;
-            min-height: 250px;
+            min-height: 200px;
             display: flex;
-            align-items: center;
+            align-items: flex-start;
             justify-content: center;
             text-align: center;
-            font-size: clamp(1.4em, 4vw, 2.2em);
-            line-height: 1.4;
+            font-size: clamp(1.1em, 2.5vw, 1.4em);
+            line-height: 1.5;
             border: 1px solid rgba(255,255,255,0.1);
+            max-height: 80vh;
+            overflow-y: auto;
         }
         
         .janis-message {
@@ -383,11 +388,11 @@ def home():
         
         .connection-status {
             position: fixed;
-            top: 20px;
-            right: 20px;
-            padding: 10px 16px;
-            border-radius: 20px;
-            font-size: 0.8em;
+            top: 10px;
+            right: 15px;
+            padding: 6px 12px;
+            border-radius: 15px;
+            font-size: 0.7em;
             z-index: 1000;
         }
         

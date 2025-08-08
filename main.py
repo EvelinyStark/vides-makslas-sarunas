@@ -369,7 +369,7 @@ def home():
             align-items: flex-start;
             justify-content: center;
             text-align: center;
-            font-size: clamp(1.5em, 2.5vw, 1.4em);
+            font-size: clamp(1.6em, 2.6vw, 1.5em);
             line-height: 1.5;
             border: 1px solid rgba(255,255,255,0.1);
             max-height: 80vh;
@@ -476,9 +476,9 @@ def home():
                     currentMessageDiv.innerHTML = `
                         <div>
                             <div style="font-size: 0.6em; opacity: 0.7; margin-bottom: 8px;">${speakerRole}</div>
-                            <div style="font-size: 0.8em; opacity: 0.9; margin-bottom: 20px; font-weight: 600;">${speakerName}</div>
+                            <div style="font-size: 0.9em; opacity: 0.9; margin-bottom: 20px; font-weight: 600;">${speakerName}</div>
                             <div>${latestMessage.text}</div>
-                            <div style="font-size: 0.5em; opacity: 0.5; margin-top: 20px;">${latestMessage.timestamp}</div>
+                            <div style="font-size: 0.7em; opacity: 0.5; margin-top: 20px;">${latestMessage.timestamp}</div>
                         </div>
                     `;
                 } else if (isConnected) {

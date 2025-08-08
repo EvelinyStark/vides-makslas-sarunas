@@ -305,7 +305,7 @@ def home():
         }
         
         .title {
-            font-size: clamp(2.5em, 6vw, 2.5em);
+            font-size: clamp(2.5em, 7vw, 2.9em);
             font-weight: 200;
             margin-bottom: 10px;
             background: linear-gradient(135deg, #4CAF50, #2196F3, #FF5722, #9C27B0);

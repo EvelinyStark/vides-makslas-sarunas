@@ -295,7 +295,7 @@ def home():
         
         .header {
             text-align: center;
-            padding: 30px 20px 20px 20px;
+            padding: 35px 20px 20px 20px;
             background: rgba(255,255,255,0.03);
             backdrop-filter: blur(20px);
             border-bottom: 1px solid rgba(255,255,255,0.1);
@@ -305,9 +305,9 @@ def home():
         }
         
         .title {
-            font-size: clamp(1.8em, 5vw, 2.5em);
+            font-size: clamp(2.2em, 5vw, 2.5em);
             font-weight: 200;
-            margin-bottom: 8px;
+            margin-bottom: 10px;
             background: linear-gradient(135deg, #4CAF50, #2196F3, #FF5722, #9C27B0);
             background-size: 400% 400%;
             animation: gradientFlow 8s ease infinite;
@@ -369,7 +369,7 @@ def home():
             align-items: flex-start;
             justify-content: center;
             text-align: center;
-            font-size: clamp(1.1em, 2.5vw, 1.4em);
+            font-size: clamp(1.5em, 2.5vw, 1.4em);
             line-height: 1.5;
             border: 1px solid rgba(255,255,255,0.1);
             max-height: 80vh;
